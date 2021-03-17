@@ -61,8 +61,8 @@ const RegisterScreen = (props) => {
     }
 
     formBody = formBody.join("&");
-
-    fetch("https://wunder-backend-movil-app.herokuapp.com/register", {
+    //https://wunder-backend-movil-app.herokuapp.com/register
+    fetch("http://192.168.1.108:4000/register", {
       method: "POST",
       body: formBody,
       headers: {
@@ -70,14 +70,9 @@ const RegisterScreen = (props) => {
       },
     })
       .then((response) => {
-        console.log(response);
-        response.json();
-        console.log(response);
-      })
-      .then((responseJson) => {
         setLoading(false);
-        console.log(responseJson);
-        if (responseJson.status == 1) {
+        console.log(response.status);
+        if (response.status == 200) {
           setIsRegistraionSuccess(true);
           console.log("Registration Successful. Please Login to proceed");
         } else {
@@ -173,7 +168,6 @@ const RegisterScreen = (props) => {
               underlineColorAndroid="#f000"
               placeholder="Enter your secret password"
               placeholderTextColor="#8b9cb5"
-              keyboardType="password"
               ref={passwordRef}
               returnKeyType="next"
               onSubmitEditing={() =>
