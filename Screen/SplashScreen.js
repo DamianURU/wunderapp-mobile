@@ -11,7 +11,7 @@ const SplashScreen = ({ navigation }) => {
       setAnimating(false);
       //chequea por user id en el storage, si existe ID nos manda a DrawerNavigationRoutes, si no hay ID, nos manda a Auth
       AsyncStorage.getItem("user_id").then((value) =>
-        navigation.replace(value === null ? "DrawerNavigationRoutes" : "Auth")
+        navigation.replace(value === null ? "Auth" : "DrawerNavigationRoutes")
       );
     }, 3000);
   }, []);
