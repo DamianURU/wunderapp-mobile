@@ -62,7 +62,7 @@ const RegisterScreen = (props) => {
 
     formBody = formBody.join("&");
     //https://wunder-backend-movil-app.herokuapp.com/register
-    fetch("http://192.168.1.108:4000/register", {
+    fetch("http://localhost:4000/register", {
       method: "POST",
       body: formBody,
       headers: {
@@ -111,7 +111,7 @@ const RegisterScreen = (props) => {
   }
 
   return (
-    <View style={{ flex: 1, backgroundColor: "#307ecc" }}>
+    <View style={{ flex: 1, backgroundColor: "#FFF1D0" }}>
       <Loader loading={loading} />
       <ScrollView
         keyboardShouldPersistTaps="handled"
@@ -122,7 +122,7 @@ const RegisterScreen = (props) => {
       >
         <View style={{ alignItems: "center" }}>
           <Image
-            source={require("../Image/aboutreact.png")}
+            source={require("../Image/wunderapp.png")}
             style={{
               width: "50%",
               height: 100,
@@ -136,9 +136,9 @@ const RegisterScreen = (props) => {
             <TextInput
               style={styles.inputStyle}
               onChangeText={(UserName) => setUserName(UserName)}
-              underlineColorAndroid="#f000"
+              underlineColorAndroid="#000000"
               placeholder="Enter Username."
-              placeholderTextColor="#8b9cb5"
+              placeholderTextColor="#000000"
               returnKeyType="next"
               onSubmitEditing={() =>
                 emailInputRef.current && emailInputRef.current.focus()
@@ -149,9 +149,9 @@ const RegisterScreen = (props) => {
             <TextInput
               style={styles.inputStyle}
               onChangeText={(UserEmail) => setUserEmail(UserEmail)}
-              underlineColorAndroid="#f000"
+              underlineColorAndroid="#000000"
               placeholder="Enter Email"
-              placeholderTextColor="#8b9cb5"
+              placeholderTextColor="#000000"
               keyboardType="email-address"
               ref={emailInputRef}
               returnKeyType="next"
@@ -165,9 +165,9 @@ const RegisterScreen = (props) => {
               style={styles.inputStyle}
               secureTextEntry={true}
               onChangeText={(password) => setPassword(password)}
-              underlineColorAndroid="#f000"
+              underlineColorAndroid="#000000"
               placeholder="Enter your secret password"
-              placeholderTextColor="#8b9cb5"
+              placeholderTextColor="#000000"
               ref={passwordRef}
               returnKeyType="next"
               onSubmitEditing={() =>
@@ -180,9 +180,9 @@ const RegisterScreen = (props) => {
             <TextInput
               style={styles.inputStyle}
               onChangeText={(name) => setName(name)}
-              underlineColorAndroid="#f000"
+              underlineColorAndroid="#000000"
               placeholder="Enter your Full Name."
-              placeholderTextColor="#8b9cb5"
+              placeholderTextColor="#000000"
               autoCapitalize="sentences"
               ref={nameInputRef}
               returnKeyType="next"
@@ -217,39 +217,39 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   buttonStyle: {
-    backgroundColor: "#7DE24E",
+    backgroundColor: "#DD1C1A",
     borderWidth: 0,
     color: "#FFFFFF",
-    borderColor: "#7DE24E",
+    borderColor: "#DD1C1A",
     height: 40,
     alignItems: "center",
     borderRadius: 30,
     marginLeft: 35,
     marginRight: 35,
     marginTop: 20,
-    marginBottom: 20,
+    marginBottom: 25,
   },
   buttonTextStyle: {
-    color: "#FFFFFF",
+    color: "#000000",
     paddingVertical: 10,
     fontSize: 16,
   },
   inputStyle: {
     flex: 1,
-    color: "white",
+    color: "#000000",
     paddingLeft: 15,
     paddingRight: 15,
     borderWidth: 1,
     borderRadius: 30,
-    borderColor: "#dadae8",
+    borderColor: "#07A0C3",
   },
   errorTextStyle: {
-    color: "red",
+    color: "DD1C1A",
     textAlign: "center",
     fontSize: 14,
   },
   successTextStyle: {
-    color: "white",
+    color: "black",
     textAlign: "center",
     fontSize: 18,
     padding: 30,

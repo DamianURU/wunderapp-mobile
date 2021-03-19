@@ -2,55 +2,57 @@
 // https://aboutreact.com/react-native-login-and-signup/
 
 // Import React and Component
-import React from 'react';
-import {View, Text, Alert, StyleSheet} from 'react-native';
+import React from "react";
+import { View, Text, Alert, StyleSheet, Image } from "react-native";
+import logo from "../Components/icon.png";
 
 import {
   DrawerContentScrollView,
   DrawerItemList,
   DrawerItem,
-} from '@react-navigation/drawer';
+} from "@react-navigation/drawer";
 
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from "@react-native-community/async-storage";
 
 const CustomSidebarMenu = (props) => {
   return (
     <View style={stylesSidebar.sideMenuContainer}>
       <View style={stylesSidebar.profileHeader}>
         <View style={stylesSidebar.profileHeaderPicCircle}>
-          <Text style={{fontSize: 25, color: '#307ecc'}}>
-            {'About React'.charAt(0)}
-          </Text>
+          <Image style={stylesSidebar.profileHeaderPicCircle} source={logo} />
+          <Text style={{ fontSize: 25, color: "#F0C808" }}></Text>
         </View>
-        <Text style={stylesSidebar.profileHeaderText}>AboutReact</Text>
+        <Text style={stylesSidebar.profileHeaderText}>Wunder Note</Text>
       </View>
       <View style={stylesSidebar.profileHeaderLine} />
 
       <DrawerContentScrollView {...props}>
         <DrawerItemList {...props} />
         <DrawerItem
-          label={({color}) => <Text style={{color: '#d8d8d8'}}>Logout</Text>}
+          label={({ color }) => (
+            <Text style={{ color: "#000000" }}>Logout</Text>
+          )}
           onPress={() => {
             props.navigation.toggleDrawer();
             Alert.alert(
-              'Logout',
-              'Are you sure? You want to logout?',
+              "Logout",
+              "Are you sure? You want to logout?",
               [
                 {
-                  text: 'Cancel',
+                  text: "Cancel",
                   onPress: () => {
                     return null;
                   },
                 },
                 {
-                  text: 'Confirm',
+                  text: "Confirm",
                   onPress: () => {
-                    AsyncStorage.clear();
-                    props.navigation.replace('Auth');
+                    AsyncStorage.removeItem("token");
+                    props.navigation.replace("Auth");
                   },
                 },
               ],
-              {cancelable: false},
+              { cancelable: false }
             );
           }}
         />
@@ -63,38 +65,38 @@ export default CustomSidebarMenu;
 
 const stylesSidebar = StyleSheet.create({
   sideMenuContainer: {
-    width: '100%',
-    height: '100%',
-    backgroundColor: '#307ecc',
+    width: "100%",
+    height: "100%",
+    backgroundColor: "#086788",
     paddingTop: 40,
-    color: 'white',
+    color: "white",
   },
   profileHeader: {
-    flexDirection: 'row',
-    backgroundColor: '#307ecc',
+    flexDirection: "row",
+    backgroundColor: "#FFF1D0",
     padding: 15,
-    textAlign: 'center',
+    textAlign: "center",
   },
   profileHeaderPicCircle: {
     width: 60,
     height: 60,
     borderRadius: 60 / 2,
-    color: 'white',
-    backgroundColor: '#ffffff',
-    textAlign: 'center',
-    justifyContent: 'center',
-    alignItems: 'center',
+    color: "white",
+    backgroundColor: "#ffffff",
+    textAlign: "center",
+    justifyContent: "center",
+    alignItems: "center",
   },
   profileHeaderText: {
-    color: 'white',
-    alignSelf: 'center',
+    color: "black",
+    alignSelf: "center",
     paddingHorizontal: 10,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   profileHeaderLine: {
     height: 1,
     marginHorizontal: 20,
-    backgroundColor: '#e2e2e2',
+    backgroundColor: "#e2e2e2",
     marginTop: 15,
   },
 });

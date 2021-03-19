@@ -1,30 +1,52 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Component } from "react";
 import { ActivityIndicator, View, StyleSheet, Image } from "react-native";
-
-import AsyncStorage from "@react-native-community/async-storage";
+import asyncToken from "../utils/token";
 
 const SplashScreen = ({ navigation }) => {
   const [animating, setAnimating] = useState(true);
 
   useEffect(() => {
-    setTimeout(() => {
-      setAnimating(false);
-      //chequea por user id en el storage, si existe ID nos manda a DrawerNavigationRoutes, si no hay ID, nos manda a Auth
-      AsyncStorage.getItem("user_id").then((value) =>
-        navigation.replace(value === null ? "Auth" : "DrawerNavigationRoutes")
-      );
-    }, 3000);
+    const getToken = async () => {
+      try {
+        const token = await asyncToken();
+        if (token !== null) {
+          fetch("http://localhost:4000/me", {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+              Authorization: "Bearer " + token,
+            },
+          })
+            .then((response) => {
+              setAnimating(false);
+              console.log(response);
+              if (response.status == 200) {
+                navigation.replace("DrawerNavigationRoutes");
+              } else {
+                navigation.replace("Auth");
+              }
+            })
+            .catch((error) => {
+              console.error(error);
+              navigation.replace("Auth");
+            });
+        } else {
+          navigation.replace("Auth");
+        }
+      } catch (error) {}
+    };
+    getToken();
   }, []);
 
   return (
     <View style={styles.container}>
       <Image
-        source={require("../Image/aboutreact.png")}
+        source={require("../Image/wunderapp.png")}
         style={{ width: "90%", resizeMode: "contain", margin: 30 }}
       />
       <ActivityIndicator
         animating={animating}
-        color="#FFFFFF"
+        color="#000000"
         size="large"
         style={styles.activityIndicator}
       />
@@ -39,7 +61,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#307ecc",
+    backgroundColor: "#FFF1D0",
   },
   activityIndicator: {
     alignItems: "center",

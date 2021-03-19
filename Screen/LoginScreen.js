@@ -46,7 +46,7 @@ const LoginScreen = ({ navigation }) => {
     }
     formBody = formBody.join("&");
     //https://wunder-backend-movil-app.herokuapp.com/login
-    fetch("http://192.168.1.108:4000/login", {
+    fetch("http://localhost:4000/login", {
       method: "POST",
       body: formBody,
       headers: {
@@ -54,21 +54,20 @@ const LoginScreen = ({ navigation }) => {
       },
     })
       .then((response) => {
-        setLoading(false);
-        console.log(response);
-        if (response.status == 200) {
-          AsyncStorage.setItem("user_id", response.user_id);
-          AsyncStorage.setItem("token", response.successful);
-          console.log(response.user_id);
-          navigation.replace("DrawerNavigationRoutes");
-        } else {
-          setErrortext("Please check your email id or password");
-          console.log("Please check your email id or password");
-        }
+        response.json().then((responseJson) => {
+          console.log(response.status);
+          console.log(responseJson);
+          if (response.status == 200) {
+            AsyncStorage.setItem("token", responseJson.token);
+            navigation.replace("DrawerNavigationRoutes");
+          } else {
+            setErrortext("Please check your email id or password");
+          }
+        });
       })
       .catch((error) => {
-        setLoading(false);
         console.error(error);
+        setErrortext("Please check your email id or password");
       });
   };
 
@@ -89,7 +88,7 @@ const LoginScreen = ({ navigation }) => {
           <KeyboardAvoidingView enabled>
             <View style={{ alignItems: "center" }}>
               <Image
-                source={require("../Image/aboutreact.png")}
+                source={require("../Image/wunderapp.png")}
                 style={{
                   width: "50%",
                   height: 100,
@@ -103,7 +102,7 @@ const LoginScreen = ({ navigation }) => {
                 style={styles.inputStyle}
                 onChangeText={(UserEmail) => setEmail(UserEmail)}
                 placeholder="Enter Email"
-                placeholderTextColor="#8b9cb5"
+                placeholderTextColor="#000000"
                 autoCapitalize="none"
                 keyboardType="email-address"
                 returnKeyType="next"
@@ -119,7 +118,7 @@ const LoginScreen = ({ navigation }) => {
                 style={styles.inputStyle}
                 onChangeText={(password) => setPassword(password)}
                 placeholder="Enter Password"
-                placeholderTextColor="#8b9cb5"
+                placeholderTextColor="#000000"
                 keyboardType="default"
                 ref={passwordInputRef}
                 onSubmitEditing={Keyboard.dismiss}
@@ -157,7 +156,7 @@ const styles = StyleSheet.create({
   mainBody: {
     flex: 1,
     justifyContent: "center",
-    backgroundColor: "#307ecc",
+    backgroundColor: "#FFF1D0",
     alignContent: "center",
   },
   SectionStyle: {
@@ -169,10 +168,10 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   buttonStyle: {
-    backgroundColor: "#7DE24E",
+    backgroundColor: "#000000",
     borderWidth: 0,
     color: "#FFFFFF",
-    borderColor: "#7DE24E",
+    borderColor: "#DD1C1A",
     height: 40,
     alignItems: "center",
     borderRadius: 30,
@@ -188,15 +187,15 @@ const styles = StyleSheet.create({
   },
   inputStyle: {
     flex: 1,
-    color: "white",
+    color: "#000000",
     paddingLeft: 15,
     paddingRight: 15,
     borderWidth: 1,
     borderRadius: 30,
-    borderColor: "#dadae8",
+    borderColor: "#07A0C3",
   },
   registerTextStyle: {
-    color: "#FFFFFF",
+    color: "#000000",
     textAlign: "center",
     fontWeight: "bold",
     fontSize: 14,
@@ -204,7 +203,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   errorTextStyle: {
-    color: "red",
+    color: "DD1C1A",
     textAlign: "center",
     fontSize: 14,
   },

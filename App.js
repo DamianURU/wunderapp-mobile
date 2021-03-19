@@ -21,13 +21,13 @@ const Auth = () => {
         name="RegisterScreen"
         component={RegisterScreen}
         options={{
-          title: "Register", //Set Header Title
+          title: "Register",
           headerStyle: {
-            backgroundColor: "#307ecc", //Set Header color
+            backgroundColor: "#07A0C3",
           },
-          headerTintColor: "#fff", //Set Header text color
+          headerTintColor: "#FFF1D0",
           headerTitleStyle: {
-            fontWeight: "bold", //Set Header text style
+            fontWeight: "bold",
           },
         }}
       />
@@ -39,24 +39,21 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="SplashScreen">
-        {/* SplashScreen which will come once for 5 Seconds */}
         <Stack.Screen
           name="SplashScreen"
           component={SplashScreen}
-          // Hiding header for Splash Screen
           options={{ headerShown: false }}
         />
-        {/* Auth Navigator which includer Login Signup will come once */}
+
         <Stack.Screen
           name="Auth"
           component={Auth}
           options={{ headerShown: false }}
         />
-        {/* Navigation Drawer as a landing page */}
+
         <Stack.Screen
           name="DrawerNavigationRoutes"
           component={DrawerNavigationRoutes}
-          // Hiding header for Navigation Drawer as we will use our custom header
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

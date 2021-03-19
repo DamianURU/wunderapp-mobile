@@ -6,64 +6,76 @@ import {
   Button,
   Pressable,
   StyleSheet,
+  Alert,
 } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
 import Loader from "./Loader";
-import AsyncStorage from "@react-native-community/async-storage";
+import asyncToken from "/Users/Damian/wunderapp/mobile/utils/token";
 
 const NoteCreator = () => {
   const [noteTitle, setNoteTitle] = useState("");
   const [noteContent, setNoteContent] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleNote = () => {
-    if (!noteTitle) {
-      alert("Please title it off.");
-      return;
-    }
-    setLoading(true);
-    setTimeout(() => {
-      setAnimating(false);
-      //chequea por user id en el storage, si existe ID nos manda a DrawerNavigationRoutes, si no hay ID, nos manda a Auth
-      AsyncStorage.getItem("user_id").then((value) =>
-        navigation.replace(value === null ? "Auth" : "DrawerNavigationRoutes")
-      );
-    }, 3000);
-    let user_id = AsyncStorage.getItem("user_id");
-    let dataToSend = {
-      noteTitle: noteTitle,
-      noteContent: noteContent,
-      user_id: user_id,
-    };
-    console.log("enviando nota");
-    let formBody = [];
-    for (let key in dataToSend) {
-      let encodedKey = encodeURIComponent(key);
-      let encodedValue = encodeURIComponent(dataToSend[key]);
-      formBody.push(encodedKey + "=" + encodedValue);
-    }
-    formBody = formBody.join("&");
-    //https://wunder-backend-movil-app.herokuapp.com/createnote
-    fetch("http://192.168.1.108:4000/createnote", {
-      method: "POST",
-      body: formBody,
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
-      },
-    })
-      .then((response) => {
-        setLoading(false);
-        console.log(response);
-        if (response.status == 200) {
-          console.log("algo tiene que decir que salio bien");
-        } else {
-          console.log("algo tiene que decir que salio mal");
-        }
+  const createTwoButtonAlert = () =>
+    Alert.alert(
+      "Error! :(",
+      "Error al enviar nota...",
+      [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+      { cancelable: false }
+    );
+
+  const handleNote = async () => {
+    try {
+      const token = await asyncToken();
+      if (!noteTitle) {
+        alert("Please title it off.");
+        return;
+      }
+
+      setLoading(true);
+      let dataToSend = {
+        notetitle: noteTitle,
+        notetext: noteContent,
+        notedate: "2021-01-01",
+        notetimeleft: "2021-01-01",
+        notecheck: false,
+        notepriority: false,
+      };
+      console.log("enviando nota");
+      let formBody = [];
+      for (let key in dataToSend) {
+        let encodedKey = encodeURIComponent(key);
+        let encodedValue = encodeURIComponent(dataToSend[key]);
+        formBody.push(encodedKey + "=" + encodedValue);
+      }
+      formBody = formBody.join("&");
+
+      console.log(token);
+      //https://wunder-backend-movil-app.herokuapp.com/createnote
+      fetch("http://localhost:4000/users/notes/create", {
+        method: "POST",
+        body: formBody,
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+          Authorization: "Bearer " + token,
+        },
       })
-      .catch((error) => {
-        setLoading(false);
-        console.error(error);
-      });
+        .then((response) => {
+          setLoading(false);
+          console.log(response);
+          if (response.status == 200) {
+            console.log("algo tiene que decir que salio bien");
+          } else {
+            createTwoButtonAlert();
+            console.log("algo tiene que decir que salio mal");
+          }
+        })
+        .catch((error) => {
+          setLoading(false);
+          console.error(error);
+        });
+    } catch (error) {}
   };
 
   return (
@@ -86,7 +98,11 @@ const NoteCreator = () => {
           value={noteContent}
         ></TextInput>
       </View>
-      <Button title="Agregar Nota" onPress={handleNote}></Button>
+      <Button
+        title="Agregar Nota"
+        onPress={handleNote}
+        color="#07A0C3"
+      ></Button>
     </SafeAreaView>
   );
 };
